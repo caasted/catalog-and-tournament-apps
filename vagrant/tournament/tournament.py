@@ -14,7 +14,6 @@ def deleteMatches():
     db = connect()
     cur = db.cursor()
     cur.execute('delete from matches;')
-    cur.execute('update players set matches_played = 0')
     db.commit()
     db.close()
 
@@ -46,7 +45,7 @@ def registerPlayer(name):
     """
     db = connect()
     cur = db.cursor()
-    cur.execute('insert into players (name, matches_played) values (%s, 0);', (name, ))
+    cur.execute('insert into players (name) values (%s);', (name, ))
     db.commit()
     db.close()
 
@@ -65,8 +64,10 @@ def playerStandings():
     """
     db = connect()
     cur = db.cursor()
-    cur.execute('select players.id, players.name, players.matches_played, count(matches.winner) as wins from players left join matches on players.id = matches.winner group by players.id order by wins desc;')
-    standings = [(int(row[0]), str(row[1]), int(row[3]), int(row[2])) for row in cur.fetchall()]
+    cur.execute('''select players.id, players.name, count(case when matches.winner = players.id then 1 end) as wins, 
+        count(case when matches.loser = players.id then 1 end) as losses from players left join matches 
+        on players.id = matches.winner or players.id = matches.loser group by players.id order by wins desc;''')
+    standings = [(int(row[0]), str(row[1]), int(row[2]), int(row[2]) + int(row[3])) for row in cur.fetchall()] 
     db.close()
     return standings
 
@@ -79,11 +80,7 @@ def reportMatch(winner, loser):
     """
     db = connect()
     cur = db.cursor()
-    cur.execute('insert into matches (winner, loser) values ({0}, {1});'.format(winner, loser))
-    cur.execute('select matches_played from players where id = {0};'.format(winner))
-    cur.execute('update players set matches_played = {0} where id = {1};'.format(int(cur.fetchall()[0][0]) + 1, winner))
-    cur.execute('select matches_played from players where id = {0};'.format(loser))
-    cur.execute('update players set matches_played = {0} where id = {1};'.format(int(cur.fetchall()[0][0]) + 1, loser))
+    cur.execute("insert into matches (winner, loser) values ({0}, {1});".format(winner, loser))
     db.commit()
     db.close()
  
