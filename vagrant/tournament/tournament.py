@@ -67,7 +67,8 @@ def playerStandings():
     cur.execute('''select players.id, players.name, count(case when matches.winner = players.id then 1 end) as wins, 
         count(case when matches.loser = players.id then 1 end) as losses from players left join matches 
         on players.id = matches.winner or players.id = matches.loser group by players.id order by wins desc;''')
-    standings = [(int(row[0]), str(row[1]), int(row[2]), int(row[2]) + int(row[3])) for row in cur.fetchall()] 
+    # This select returns a table with each row containing a player's id, name, number of wins, and number of losses
+    standings = [(int(row[0]), str(row[1]), int(row[2]), int(row[2]) + int(row[3])) for row in cur.fetchall()] # wins + losses = matches
     db.close()
     return standings
 
@@ -103,7 +104,7 @@ def swissPairings():
     new_pairings = []
     index = 0;
     while index < len(current_record):
-        new_pairings.append((current_record[index][0], current_record[index][1], 
-            current_record[index + 1][0], current_record[index + 1][1]))
-        index += 2
+        new_pairings.append((current_record[index][0], current_record[index][1],    # even player in ranked-order matching
+            current_record[index + 1][0], current_record[index + 1][1]))            # odd player in ranked-order matching
+        index += 2                                                                  # increment to the next set of two players
     return new_pairings
