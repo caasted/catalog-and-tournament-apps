@@ -7,7 +7,10 @@ import psycopg2
 
 def connect():
     """Connect to the PostgreSQL database.  Returns a database connection."""
-    return psycopg2.connect("dbname=tournament")
+    try:
+        return psycopg2.connect("dbname=tournament")
+    except:
+        print "Connection failed"
 
 def deleteMatches():
     """Remove all the match records from the database."""
@@ -81,7 +84,7 @@ def reportMatch(winner, loser):
     """
     db = connect()
     cur = db.cursor()
-    cur.execute("insert into matches (winner, loser) values ({0}, {1});".format(winner, loser))
+    cur.execute('insert into matches (winner, loser) values (%s, %s);', (winner, loser))
     db.commit()
     db.close()
  
@@ -102,9 +105,7 @@ def swissPairings():
     """
     current_record = playerStandings()
     new_pairings = []
-    index = 0;
-    while index < len(current_record):
-        new_pairings.append((current_record[index][0], current_record[index][1],    # even player in ranked-order matching
-            current_record[index + 1][0], current_record[index + 1][1]))            # odd player in ranked-order matching
-        index += 2                                                                  # increment to the next set of two players
+    for index in range(0, len(current_record), 2):
+        new_pairings.append((current_record[index][0], current_record[index][1],    # even player in rank-ordered matching
+            current_record[index + 1][0], current_record[index + 1][1]))            # odd player in rank-ordered matching
     return new_pairings
