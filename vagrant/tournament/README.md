@@ -1,7 +1,7 @@
 #TOURNAMENT DOCUMENTATION
 ##Instructions:
 
-To use the files contained in this archive, first connect to your postgresql server by typing 'psql' in your terminal. Second, run the tournament.sql file (e.g. '\i tournament.sql') to create the required database and tables, then exit postgresql by entering '\q'. Once you are back on the command line, the test and demonstration files can be ran through python (e.g. 'python tournament_test.py') to validate the tournament database is running and calls to the tournament.py functions are working correctly.
+To use the files contained in this archive, first connect to your postgresql server by typing 'psql' in your terminal. Second, run the tournament.sql file ('\i tournament.sql') to create the required database and tables, then exit postgresql by entering '\q'. Once you are back on the command line, the test and demonstration files can be ran through python (e.g. 'python tournament_test.py') to validate the tournament database is running and calls to the tournament.py functions are working correctly.
 
 ##File Descriptions:
 
