@@ -1,8 +1,8 @@
 from sqlalchemy import Column, Integer, String
 
-from models import base
+from models.base import Base
 
-class User(base.Base):
+class User(Base):
 	__tablename__ = 'user'
 	__table_args__ = {'sqlite_autoincrement': True}
 

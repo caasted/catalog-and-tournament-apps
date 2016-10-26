@@ -1,9 +1,11 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from models import base, user, store
+from models.base import Base
+from models.user import User
+from models.store import Store
 
-class Product(base.Base):
+class Product(Base):
 	__tablename__ = "product"
 	__table_args__ = {'sqlite_autoincrement': True}
 
@@ -13,9 +15,9 @@ class Product(base.Base):
 	description = Column(String(250))
 	price = Column(String(10))
 	store_id = Column(Integer, ForeignKey('store.id'))
-	store = relationship(store.Store)
+	store = relationship(Store)
 	user_id = Column(Integer, ForeignKey('user.id'))
-	user = relationship(user.User)
+	user = relationship(User)
 
 	@property
 	def serialize(self):

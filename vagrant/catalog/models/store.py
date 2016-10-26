@@ -1,16 +1,17 @@
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.orm import relationship
 
-from models import base, user
+from models.base import Base
+from models.user import User
 
-class Store(base.Base):
+class Store(Base):
 	__tablename__ = 'store'
 	__table_args__ = {'sqlite_autoincrement': True}
 
 	id = Column(Integer, primary_key=True)
 	name = Column(String(250), nullable=False)
 	user_id = Column(Integer, ForeignKey('user.id'))
-	user = relationship(user.User)
+	user = relationship(User)
 
 	@property
 	def serialize(self):
