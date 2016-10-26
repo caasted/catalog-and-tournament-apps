@@ -1,25 +1,25 @@
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from database_setup import Base, User, Store, Product
+from models import *
 
 engine = create_engine('sqlite:///productcatalog.db')
-Base.metadata.bind = engine
+base.Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
 # Create a first user for entering items
-user = User(name="Secret User", email="somebody@email.com")
+user = user.User(name="Secret User", email="somebody@email.com")
 session.add(user)
 session.commit()
 
 # Create a first store to associate products with
-store = Store(name="Virtual Reality Store", user_id=1)
+store = store.Store(name="Virtual Reality Store", user_id=1)
 session.add(store)
 session.commit()
 
 # Create items to populate the product list
 # Item information compiled from Amazon.com and Steampowered.com
-item = Product(name="Samsung Gear VR", 
+item = product.Product(name="Samsung Gear VR", 
 				category="Hardware", 
 				description="""Light weight so you can play and watch more 
 				comfortably. Easy to use touch pad wide field of view, precise 
@@ -35,7 +35,7 @@ item = Product(name="Samsung Gear VR",
 session.add(item)
 session.commit()
 
-item2 = Product(name="Plustore 3D Virtual Reality Glasses", 
+item2 = product.Product(name="Plustore 3D Virtual Reality Glasses", 
 				category="Hardware", 
 				description="""Revolutionary optical system - it completely 
 				eliminates the feel of vertigo. Fit everyone's eyes: Pupil 
@@ -52,7 +52,7 @@ item2 = Product(name="Plustore 3D Virtual Reality Glasses",
 session.add(item2)
 session.commit()
 
-item3 = Product(name="SARLAR 3D VR Glasses", 
+item3 = product.Product(name="SARLAR 3D VR Glasses", 
 				category="Hardware", 
 				description="""TAKE CARE OF YOUR EYES AND PUT ZERO 
 				PRESSURE-Lower eyelid is the weakest part of the eyes. It's 
@@ -85,7 +85,7 @@ item3 = Product(name="SARLAR 3D VR Glasses",
 session.add(item3)
 session.commit()
 
-item4 = Product(name="Cellay 3D VR Goggles", 
+item4 = product.Product(name="Cellay 3D VR Goggles", 
 				category="Hardware", 
 				description="""Glasses-free: Without wearing the glasses if your 
 				visual acuity is under 600 degree. IMAX Effect: Anti-distortion 
@@ -102,11 +102,11 @@ item4 = Product(name="Cellay 3D VR Goggles",
 session.add(item4)
 session.commit()
 
-item5 = Product(name="Google Cardboard", 
+item5 = product.Product(name="Google Cardboard", 
 				category="Hardware", 
 				description="""GOOGLE CARDBOARD is the primary experience 
 				version of 3D VR Glasses. It's made from the AAA grade 
-				corrugated paper which is the strongest material. Our product is 
+				corrugated paper which is the strongest material. Our product.Product is 
 				the highest quality for this price in the market. HAVING 
 				ADVANCED GOOGLE CARDBOARD according to the advice from customers 
 				and tested it over 80 times. We add the longer head strap,
@@ -128,7 +128,7 @@ item5 = Product(name="Google Cardboard",
 session.add(item5)
 session.commit()
 
-item = Product(name="Oculus Rift", 
+item = product.Product(name="Oculus Rift", 
 				category="Hardware", 
 				description="""Oculus Rift's advanced display technology 
 				combined with its precise, low-latency constellation tracking 
@@ -150,7 +150,7 @@ item = Product(name="Oculus Rift",
 session.add(item)
 session.commit()
 
-item = Product(name="HTC Vive", 
+item = product.Product(name="HTC Vive", 
 				category="Hardware", 
 				description="""Vive is built from the ground up for room-scale 
 				VR, which allows you to physically move around objects in the 
@@ -172,7 +172,7 @@ item = Product(name="HTC Vive",
 session.add(item)
 session.commit()
 
-item = Product(name="Virtual Reality Insider: Guidebook for the VR Industry", 
+item = product.Product(name="Virtual Reality Insider: Guidebook for the VR Industry", 
 				category="Reference", 
 				description="""Virtual reality is as explosive a technology as 
 				the Internet! Are you working in the VR industry, or curious to 
@@ -190,7 +190,7 @@ item = Product(name="Virtual Reality Insider: Guidebook for the VR Industry",
 session.add(item)
 session.commit()
 
-item = Product(name="""Learning Virtual Reality: Developing Immersive 
+item = product.Product(name="""Learning Virtual Reality: Developing Immersive 
 				Experiences and Applications for Desktop, Web, and Mobile""", 
 				category="Reference", 
 				description="""As virtual reality approaches mainstream consumer 
@@ -211,7 +211,7 @@ item = Product(name="""Learning Virtual Reality: Developing Immersive
 session.add(item)
 session.commit()
 
-item = Product(name="The VR Book: Human-Centered Design for Virtual Reality", 
+item = product.Product(name="The VR Book: Human-Centered Design for Virtual Reality", 
 				category="Reference", 
 				description="""Without a clear understanding of the human side 
 				of virtual reality (VR), the experience will always fail. The VR 
@@ -245,7 +245,7 @@ item = Product(name="The VR Book: Human-Centered Design for Virtual Reality",
 session.add(item)
 session.commit()
 
-item = Product(name="""The Real Reason Facebook Acquired Oculus Rift: How 
+item = product.Product(name="""The Real Reason Facebook Acquired Oculus Rift: How 
 		Virtual Reality Will Disrupt Every Industry and Why You Should Care""", 
 				category="Reference", 
 				description="""What is Facebook's interest in acquiring a gaming 
@@ -261,7 +261,7 @@ item = Product(name="""The Real Reason Facebook Acquired Oculus Rift: How
 session.add(item)
 session.commit()
 
-item = Product(name="The Lab", 
+item = product.Product(name="The Lab", 
 				category="Software", 
 				description="""Set in a pocket universe of Aperture Science, 
 				The Lab offers a wide range of ways to enjoy VR, all in one 
@@ -291,7 +291,7 @@ item = Product(name="The Lab",
 session.add(item)
 session.commit()
 
-item = Product(name="Keep Talking and Nobody Explodes", 
+item = product.Product(name="Keep Talking and Nobody Explodes", 
 				category="Software", 
 				description="""In Keep Talking and Nobody Explodes, one player 
 				is trapped in a virtual room with a ticking time bomb they must 
@@ -312,7 +312,7 @@ item = Product(name="Keep Talking and Nobody Explodes",
 session.add(item)
 session.commit()
 
-item = Product(name="Space Pirate Trainer", 
+item = product.Product(name="Space Pirate Trainer", 
 				category="Software", 
 				description="""Space Pirate Trainer is the official trainer for 
 				wannabe space pirates on the HTC Vive.  Remember those awesome 
@@ -332,7 +332,7 @@ item = Product(name="Space Pirate Trainer",
 session.add(item)
 session.commit()
 
-item = Product(name="Vanishing Realms", 
+item = product.Product(name="Vanishing Realms", 
 				category="Software", 
 				description="""Vanishing Realms: Rite of Steel is an immersive 
 				Role Playing Game designed from the ground up for Virtual 
@@ -350,7 +350,7 @@ item = Product(name="Vanishing Realms",
 session.add(item)
 session.commit()
 
-item = Product(name="The Body VR", 
+item = product.Product(name="The Body VR", 
 				category="Software", 
 				description="""The Body VR is an educational virtual reality 
 				experience that takes the user inside the human body. Travel 
@@ -364,7 +364,7 @@ item = Product(name="The Body VR",
 session.add(item)
 session.commit()
 
-item = Product(name="Anyland", 
+item = product.Product(name="Anyland", 
 				category="Software", 
 				description="""Anyland is an open virtual reality universe to 
 				create your home, chat with others, explore & live in! Made 
@@ -383,7 +383,7 @@ item = Product(name="Anyland",
 session.add(item)
 session.commit()
 
-item = Product(name="Waltz of the Wizard", 
+item = product.Product(name="Waltz of the Wizard", 
 				category="Software", 
 				description="""Waltz of the Wizard is a virtual reality 
 				experience that lets you feel what it's like to have magical 
@@ -399,7 +399,7 @@ item = Product(name="Waltz of the Wizard",
 session.add(item)
 session.commit()
 
-item = Product(name="Portal Stories: VR", 
+item = product.Product(name="Portal Stories: VR", 
 				category="Software", 
 				description="""Portal Stories: VR is a brand new mini story set 
 				in the Portal Universe. It features 10 brand new puzzles, 
@@ -416,7 +416,7 @@ item = Product(name="Portal Stories: VR",
 session.add(item)
 session.commit()
 
-item = Product(name="Zombie Training Simulator", 
+item = product.Product(name="Zombie Training Simulator", 
 				category="Software", 
 				description="""Are you really ready for the zombie apocalypse? 
 				Zombie Training Simulator is the dominant authority and world's 
