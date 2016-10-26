@@ -22,6 +22,7 @@
 					data-approvalprompt="force">
 				</span>
 			</div>
+			
 			<script>
 			function signInCallback(authResult) {
 				if (authResult['code']) {
@@ -36,10 +37,7 @@
 						success: function(result) {
 							// Handle or verify the server response if necessary.
 							if (result) {
-								$('#result').html('Login Successful! Refreshing...')
-								setTimeout(function() {
-									window.location.reload();
-								}, 4000);
+								location.reload();
 							} else if (authResult['error']) {
 								console.log('There was an error: ' + authResult['error']);
 							} else {
@@ -63,7 +61,7 @@
 <div class="row divider">
 	<div class="col-md-12"></div>
 </div>
-<div class="flash" id="result">
+<div class="flash">
 	{% with messages = get_flashed_messages() %}
 		{% if messages %}
 			<ul>

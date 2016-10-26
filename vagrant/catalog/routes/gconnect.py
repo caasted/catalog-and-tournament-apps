@@ -87,8 +87,11 @@ def gconnect():
     	user_id = createUser(login_session)
     login_session['user_id'] = user_id
 
+    output = ''
+    output += 'Welcome, '
+    output += login_session['username']
+    output += '!'
     flash("You are now logged in as %s" % login_session['username'])
-    # print "done!"
     print "User ID %s has logged in." % login_session['user_id']
-    return
+    return output # Output message not currently being used
 
