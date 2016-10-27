@@ -17,24 +17,53 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-# User Helper Functions
+# DB query helper functions
+def checkStore(store_id):
+    result = session.query(Store).filter_by(id=store_id).first()
+    if not result:
+        flash("Store ID doesn't exist!")
+    return result
+
+def checkProduct(product_id):
+    result = session.query(Product).filter_by(id=product_id).first()
+    if not result:
+        flash("Product ID doesn't exist!")
+    return result
+
+def checkUser(user_id):
+    result = session.query(User).filter_by(id=user_id).first()
+    if not result:
+        flash("User ID doesn't exist!")
+    return result
+
+# Permissions helper functions
+def checkLogin():
+    if 'user_id' not in login_session:
+        flash("Please log in with your Google+ account to make changes.")
+        return None
+    return True
+
+def checkOwner(store_id):
+    store = checkStore(store_id)
+    owner = checkUser(store.user_id)
+    if owner.id != login_session['user_id']:
+        flash("You don't have permission to edit that store or its products.")
+        return None
+    return True
+
+# User helper functions
 def createUser(login_session):
     newUser = User(name=login_session['username'], email=login_session['email'])
     session.add(newUser)
     session.commit()
-    user = session.query(User).filter_by(email=login_session['email']).one()
+    user = session.query(User).filter_by(email=login_session['email']).first()
     return user.id
 
-def getUserInfo(user_id):
-    user = session.query(User).filter_by(id=user_id).one()
-    return user
-
 def getUserID(email):
-    try:
-        user = session.query(User).filter_by(email=email).one()
-        return user.id
-    except:
+    user = session.query(User).filter_by(email=email).first()
+    if not user:
         return None
+    return user.id
 
 # Create anti-forgery state token
 def makeState():

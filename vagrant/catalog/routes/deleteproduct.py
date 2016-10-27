@@ -3,16 +3,17 @@ from routes.common import *
 @app.route('/store/<int:store_id>/catalog/<int:product_id>/delete/', 
 			methods=['GET', 'POST'])
 def deleteProduct(store_id, product_id):
-	store = session.query(Store).filter_by(id=store_id).one()
-	creator = getUserInfo(store.user_id)
-	product = session.query(Product).filter_by(id=product_id).one()
-	if 'username' not in login_session:
-		return redirect('/login')
-	elif creator.id != login_session['user_id']:
-		flash("You don't have permission to delete products in this store.")
-		return redirect(url_for('showProduct', store_id=store_id, 
-												category=product.category, 
-												product_id=product.id))
+	if not (checkLogin() and checkOwner(store_id)):
+		return redirect(url_for('showStores'))
+	store = checkStore(store_id)
+	if not store:
+		return redirect(url_for('showStores'))
+	creator = checkUser(store.user_id)
+	if not creator:
+		return redirect(url_for('showStores'))
+	product = checkProduct(product_id)
+	if not product:
+		return redirect(url_for('showStores'))
 	if request.method == 'POST':
 		session.delete(product)
 		session.commit()

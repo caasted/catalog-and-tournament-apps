@@ -4,8 +4,12 @@ from routes.common import *
 @app.route('/store/<int:store_id>/catalog/')
 @app.route('/store/<int:store_id>/catalog/<string:category>/')
 def showCatalog(store_id, category=''):
-	store = session.query(Store).filter_by(id=store_id).one()
-	creator = getUserInfo(store.user_id)
+	store = checkStore(store_id)
+	if not store:
+		return redirect(url_for('showStores'))
+	creator = checkUser(store.user_id)
+	if not creator:
+		return redirect(url_for('showStores'))
 	categories = session.query(Product).filter_by(
 						store_id=store_id).group_by(Product.category).all()
 	if category != '':
@@ -16,7 +20,7 @@ def showCatalog(store_id, category=''):
 		products = session.query(Product).filter_by(
 						store_id=store_id).order_by(Product.id.desc()).limit(10)
 		section_title = "Latest Products"
-	if 'username' not in login_session or (creator.id != 
+	if 'user_id' not in login_session or (creator.id != 
 													login_session['user_id']):
 		state = makeState()
 		return render_template('publiccatalog.html', store=store, 

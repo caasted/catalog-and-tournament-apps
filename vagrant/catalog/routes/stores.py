@@ -4,7 +4,7 @@ from routes.common import *
 @app.route('/store/')
 def showStores():
 	stores = session.query(Store).order_by(asc(Store.id))
-	if 'username' not in login_session:
+	if 'user_id' not in login_session:
 		state = makeState()
 		return render_template('publicstores.html', stores=stores, state=state)
 	else:
